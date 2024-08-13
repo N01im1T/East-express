@@ -120,6 +120,19 @@
   transition: background-color 0.2s ease;
 }
 
+/* East economic forum button */
+
+.btn-eef {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  max-height: 95px;
+  padding: 1rem 1.25rem 1rem 1.25rem;
+  border: none;
+}
+
 /* Modal buttons */
 
 .reply-form > .btn-call-me-back,

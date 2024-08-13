@@ -147,6 +147,13 @@ p {
   cursor: not-allowed;
 }
 
+.btn-eef {
+  font-family: var(--font-semibold);
+  font-weight: var(--weight-semibold);
+  line-height: 130%;
+  text-align: left;
+}
+
 /* Inputs */
 
 .input-container {

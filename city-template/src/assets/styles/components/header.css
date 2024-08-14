@@ -193,11 +193,11 @@
   margin-right: 2rem;
 }
 
-.main-content-wraper-text {
+.main-content-wrapper-text {
   margin-top: 1rem;
 }
 
-.main-content-wraper-text.eng {
+.main-content-wrapper-text.eng {
   max-width: 760px;
 }
 
@@ -304,7 +304,7 @@
     max-width: 583px;
   }
 
-  .main-content-wraper-text {
+  .main-content-wrapper-text {
     max-width: 583px;
     margin-top: 3rem;
   }

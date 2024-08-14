@@ -122,15 +122,23 @@
 
 /* East economic forum button */
 
-.btn-eef {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
+.btn-order-eef-transfer {
+  background-color: var(--btn-eef-color-default);
 
-  max-height: 95px;
-  padding: 1rem 1.25rem 1rem 1.25rem;
   border: none;
+
+  max-width: 268px;
+  min-width: 268px;
+  min-height: 67px;
+  height: 67px;
+}
+
+.btn-order-eef-transfer:hover {
+  background-color: var(--btn-eef-color-hover);
+}
+
+.btn-order-eef-transfer:active {
+  background-color: var(--btn-eef-color-click);
 }
 
 /* Modal buttons */
@@ -175,6 +183,11 @@
 
 .city-item.selected > .city-item-button .check-mark-color {
   stroke: var(--btn-choose-city-active);
+}
+
+.calculator-form > .btn-order-eef-transfer {
+  max-width: 767px;
+  width: 100%;
 }
 
 /* Toggle language button */
@@ -274,10 +287,16 @@
   }
 }
 
-@media (max-width: 592px) {
+@media (max-width: 625px) {
   .btn-sm {
-    max-width: 496px;
-    min-width: 272px;
+    max-width: 529px;
+    min-width: 256px;
+    width: 100%;
+  }
+
+  .btn-order-eef-transfer {
+    max-width: 529px;
+    min-width: 256px;
     width: 100%;
   }
 }

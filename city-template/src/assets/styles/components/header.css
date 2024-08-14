@@ -193,11 +193,11 @@
   margin-right: 2rem;
 }
 
-.main-content-wraper-text {
+.main-content-wrapper-text {
   margin-top: 1rem;
 }
 
-.main-content-wraper-text.eng {
+.main-content-wrapper-text.eng {
   max-width: 760px;
 }
 
@@ -205,15 +205,30 @@
   vertical-align: baseline;
 }
 
-.text-wrapper {
+.eef-link {
   display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 0.5rem;
 
-  margin-top: 3rem;
+  background-color: var(--secondary-color);
+
+  max-width: 318px;
+  max-height: 95px;
+  margin-top: 1rem;
+  padding: 1rem 1.25rem 1rem 1.25rem;
+  border: none;
+  border-radius: 1.25rem;
 }
 
-.text-wrapper p {
-  margin-left: 2rem;
+.text-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 1rem;
+  row-gap: 1rem;
+
+  margin-top: 3rem;
 }
 
 .car-info {
@@ -252,6 +267,15 @@
   .emoji {
     max-width: 56px;
     max-height: 56px;
+  }
+
+  .eef-link {
+    max-width: 222px;
+    padding: 0.75rem 0.875rem 0.75rem 0.875rem;
+  }
+
+  .eef-link img {
+    max-width: 76px;
   }
 
   .car-info {
@@ -352,6 +376,15 @@
     max-height: 46px;
   }
 
+  .eef-link {
+    max-width: 190px;
+    padding: 0.5rem 0.625rem 0.5rem 0.625rem;
+  }
+
+  .eef-link img {
+    max-width: 56px;
+  }
+
   .text-wrapper p {
     max-width: 251px;
   }
@@ -409,5 +442,11 @@
 
   .car-info {
     margin-top: 3rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .eef-link {
+    padding: 0.5rem;
   }
 }

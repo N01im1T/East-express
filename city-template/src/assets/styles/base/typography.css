@@ -147,11 +147,11 @@ p {
   cursor: not-allowed;
 }
 
-.btn-eef {
-  font-family: var(--font-semibold);
-  font-weight: var(--weight-semibold);
-  line-height: 130%;
-  text-align: left;
+.btn-order-eef-transfer {
+  font-family: var(--font-bold);
+  font-weight: var(--weight-bold);
+  font-size: 1rem;
+  color: var(--text-color);
 }
 
 /* Inputs */
@@ -256,6 +256,15 @@ p {
   line-height: 130%;
 }
 
+.eef-link {
+  font-family: var(--font-semibold);
+  font-weight: var(--weight-semibold);
+  font-size: 1.25rem;
+  color: var(--text-color-dark);
+  line-height: 130%;
+  text-align: left;
+}
+
 .text-wrapper p a {
   color: #2f80ed;
 }
@@ -319,6 +328,16 @@ p {
   font-weight: var(--weight-extrabold);
   font-size: 1.25rem;
   line-height: 120%;
+}
+
+/* East Economic Section */
+
+.eef-section-text {
+  font-family: var(--font-regular);
+  font-weight: var(--weight-regular);
+  font-size: 1.25rem;
+  line-height: 130%;
+  color: var(--text-color-dark);
 }
 
 /* Calculator */
@@ -535,8 +554,13 @@ p {
   h3 {
     font-size: 2.25rem;
   }
+  
 
   /* Header */
+
+  .eef-link p {
+    font-size: 1rem;
+  }
 
   .car-info-item p {
     font-size: 18px;
@@ -596,7 +620,17 @@ p {
 
   /* Header */
 
+  .eef-link p {
+    font-size: 0.825rem;
+  }
+
   .car-info-item span {
+    font-size: 3rem;
+  }
+
+  /* East economic forum section */
+
+  .eef-section-container > .eef-section-text h2 {
     font-size: 3rem;
   }
 
@@ -649,6 +683,12 @@ p {
 
   .main-content-wraper p {
     font-size: 1rem;
+  }
+
+  /* East economic forum section */
+
+  .eef-section-container > .eef-section-text h2 {
+    font-size: 2.25rem;
   }
 
   /* Advantages */

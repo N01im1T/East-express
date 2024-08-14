@@ -13,6 +13,8 @@
     "chooseCity": "Choose your city",
     "choose": "Choose",
     "calculateCost": "Calculate cost",
+    "orderEefTransfer": "Order a transfer to the EEF",
+    "orderEef": "Order",
     "personalDataProcessing": "By clicking the button, you consent to the <a href='' target='_blank' rel='noopener noreferrer'>processing of personal data</a>",
     "chooseCityError": "Please, choose your city"
   },
@@ -30,6 +32,8 @@
     "chooseCity": "Выберете ваш город",
     "choose": "Выбрать",
     "calculateCost": "Рассчитать стоимость",
+    "orderEefTransfer": "Заказать трансфер на ВЭФ",
+    "orderEef": "Заказать",
     "personalDataProcessing": "Нажимая на кнопку, вы даете согласие на <a href='' target='_blank' rel='noopener noreferrer'>обработку персональных данных</a>",
     "chooseCityError": "Пожалуйста, выберете ваш город"
   }

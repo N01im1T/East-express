@@ -305,6 +305,29 @@ const modals = () => {
 
         break;
 
+      case "btn-order-eef-transfer":
+        header.textContent = messages.orderEefTransfer;
+
+        form.classList.add("calculator-form");
+
+        submitButton.classList.remove("btn-primary");
+        submitButton.classList.add("btn-order-eef-transfer");
+        submitButton.setAttribute("type", "submit");
+        submitButton.textContent = messages.orderEef;
+
+        form.append(
+          userNameInput,
+          userEmailInput,
+          userPhoneInput,
+          userMessageInput,
+          hiddenInput,
+          submitButton,
+        );
+
+        modalContainer.append(header, closeButton, form, dataProcessing);
+
+        break;
+
       default:
         console.log("There isn't such button");
 
@@ -365,7 +388,12 @@ const modals = () => {
       modalContainer.querySelector('.price').textContent = transportPrice;
     });
   });
-
+  document.querySelectorAll(".btn-order-eef-transfer").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      createAndShowModal("btn-order-eef-transfer");
+      modal.style.display = "block";
+    });
+  });
 
   closeButton.addEventListener("click", () => {
     modal.classList.remove("fade-in");

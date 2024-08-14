@@ -14,9 +14,9 @@ const forms = (container = document) => {
   };
 
   const rawLang = document.documentElement.lang;
-  const lang = rawLang ? rawLang.toLowerCase().split('-')[0] : '';
+  const lang = rawLang ? rawLang.toLowerCase().split("-")[0] : "";
 
-  const selectedLang = messages[lang] ? lang : 'en';
+  const selectedLang = messages[lang] ? lang : "en";
   const message = messages[selectedLang];
 
   const postData = async (url, data) => {
@@ -43,7 +43,7 @@ const forms = (container = document) => {
 
       formData.append("action", "submit_form");
 
-      postData(backend['ajax_url'], formData)
+      postData(backend["ajax_url"], formData)
         .then((res) => {
           console.log(res);
         })

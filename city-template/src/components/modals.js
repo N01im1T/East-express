@@ -9,17 +9,15 @@ import dictionary from "./modals-dictionary.json";
 const modals = () => {
   // Get the value of the lang attribute
   const rawLanguage = document.documentElement.lang;
-  const language = rawLanguage ? rawLanguage.toLowerCase().split('-')[0] : '';
+  const language = rawLanguage ? rawLanguage.toLowerCase().split("-")[0] : "";
 
-  const selectedLanguage = dictionary[language] ? language : 'en';
+  const selectedLanguage = dictionary[language] ? language : "en";
   const messages = dictionary[selectedLanguage];
-  
 
   const modal = document.createElement("div");
   modal.classList.add("modal");
   const modalContainer = document.createElement("div");
   modal.appendChild(modalContainer);
-
 
   const header = document.createElement("h4");
   const closeButton = document.createElement("button");
@@ -42,21 +40,23 @@ const modals = () => {
 
   async function loadCities() {
     try {
-      const response = await fetch('https://avto2a.ru/wp-admin/admin-ajax.php?action=get_cities');
+      const response = await fetch(
+        "https://avto2a.ru/wp-admin/admin-ajax.php?action=get_cities",
+      );
       if (!response.ok) {
-          throw new Error('Network response was not ok');
-      };
+        throw new Error("Network response was not ok");
+      }
       citiesData = await response.json();
       citiesLoaded = true;
     } catch (error) {
-      console.error('Fetching cities failed:', error);
+      console.error("Fetching cities failed:", error);
     }
   }
 
   function displayCities() {
     cityList.innerHTML = "";
 
-    citiesData.forEach(city => {
+    citiesData.forEach((city) => {
       const cityItem = document.createElement("li");
       const cityUrl = "https://www." + city.url;
       cityItem.setAttribute("data-url", cityUrl);
@@ -69,7 +69,7 @@ const modals = () => {
       const cityItemName = document.createTextNode(city.name);
       cityItemButton.appendChild(cityItemName);
 
-      cityItemButton.insertAdjacentHTML('beforeend', checkMarkIcon);
+      cityItemButton.insertAdjacentHTML("beforeend", checkMarkIcon);
 
       cityItemButton.addEventListener("click", () => {
         if (cityItem.classList.contains("selected")) {
@@ -90,7 +90,6 @@ const modals = () => {
   }
 
   var selectedCity = null;
-
 
   // Order modal
   const orderFormWrapper = document.createElement("div");
@@ -121,7 +120,6 @@ const modals = () => {
           <span class="currency">₽</span>
       </p>
   `;
-
 
   const form = document.createElement("form");
   form.setAttribute("action", "/submit");
@@ -178,12 +176,10 @@ const modals = () => {
   `;
 
   const submitButton = document.createElement("button");
-  
 
   const dataProcessing = document.createElement("p");
   dataProcessing.classList.add("personal-data-processing");
   dataProcessing.innerHTML = messages.personalDataProcessing;
-
 
   function createAndShowModal(btn) {
     modal.classList.remove("fade-out");
@@ -267,7 +263,7 @@ const modals = () => {
         submitButton.textContent = messages.choose;
         submitButton.addEventListener("click", () => {
           if (selectedCity) {
-            const url = selectedCity.getAttribute('data-url');
+            const url = selectedCity.getAttribute("data-url");
             window.location.href = url;
           } else {
             alert(messages.chooseCityError);
@@ -294,12 +290,12 @@ const modals = () => {
           userEmailInput,
           userPhoneInput,
           userMessageInput,
-          hiddenInput
+          hiddenInput,
         );
 
         orderFormWrapper.append(orderInputs, transportCard, submitButton);
 
-        form.append(orderFormWrapper)
+        form.append(orderFormWrapper);
 
         modalContainer.append(header, closeButton, form, dataProcessing);
 
@@ -317,7 +313,6 @@ const modals = () => {
     applyInputs();
     applyForms();
   }
-
 
   document
     .getElementById("btn-call-me-back")
@@ -350,22 +345,27 @@ const modals = () => {
       createAndShowModal("btn-order");
       modal.style.display = "block";
 
-      const transportCard = this.closest('.transport-card');
+      const transportCard = this.closest(".transport-card");
 
-      const passengerAmount = transportCard.querySelector('.passenger-amount').textContent;
-      const luggageAmount = transportCard.querySelector('.luggage-amount').textContent;
-      const transportImgSrc = transportCard.querySelector('.transport-img').src;
-      const transportQuality = transportCard.querySelector('.transport-quality').textContent;
-      const transportPrice = transportCard.querySelector('.price').textContent;
+      const passengerAmount =
+        transportCard.querySelector(".passenger-amount").textContent;
+      const luggageAmount =
+        transportCard.querySelector(".luggage-amount").textContent;
+      const transportImgSrc = transportCard.querySelector(".transport-img").src;
+      const transportQuality =
+        transportCard.querySelector(".transport-quality").textContent;
+      const transportPrice = transportCard.querySelector(".price").textContent;
 
-      modalContainer.querySelector('.passenger-amount').textContent = passengerAmount;
-      modalContainer.querySelector('.luggage-amount').textContent = luggageAmount;
-      modalContainer.querySelector('.transport-img').src = transportImgSrc;
-      modalContainer.querySelector('.transport-quality').textContent = transportQuality;
-      modalContainer.querySelector('.price').textContent = transportPrice;
+      modalContainer.querySelector(".passenger-amount").textContent =
+        passengerAmount;
+      modalContainer.querySelector(".luggage-amount").textContent =
+        luggageAmount;
+      modalContainer.querySelector(".transport-img").src = transportImgSrc;
+      modalContainer.querySelector(".transport-quality").textContent =
+        transportQuality;
+      modalContainer.querySelector(".price").textContent = transportPrice;
     });
   });
-
 
   closeButton.addEventListener("click", () => {
     modal.classList.remove("fade-in");
@@ -386,7 +386,6 @@ const modals = () => {
       }, 500);
     }
   });
-  
 
   loadCities();
 };

@@ -26,13 +26,12 @@
   --toggle-btn-click: #4f4f4f;
   --toggle-btn-disable: #828282;
   --btn-choose-city-hover: #333333;
-  --btn-choose-city-click: #BDBDBD;
+  --btn-choose-city-click: #bdbdbd;
   --btn-choose-city-active: #219653;
-  --btn-eef-color-default: #2F80ED;
-  --btn-eef-color-hover: #70A5EC;
-  --btn-eef-color-click: #0A4EA9;
+  --btn-eef-color-default: #2f80ed;
+  --btn-eef-color-hover: #70a5ec;
+  --btn-eef-color-click: #0a4ea9;
   --btn-eef-color-disable: #979797;
-
 
   --input-primary-color: #f2f2f2;
   --input-secondary-color: #333333;

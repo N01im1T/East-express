@@ -31,7 +31,8 @@ const buttons = () => {
       } else {
         ruBtn.setAttribute("aria-selected", "true");
         enBtn.setAttribute("aria-selected", "false");
-        document.querySelector(".indicator").style.transform = "translateX(100%)";
+        document.querySelector(".indicator").style.transform =
+          "translateX(100%)";
         switchLanguage("ru");
       }
     });

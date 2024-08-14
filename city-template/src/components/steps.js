@@ -33,8 +33,8 @@ const steps = () => {
   function updateSVGContent() {
     for (let i = 1; i <= 4; i++) {
       let svgElement = document.getElementById(`step-svg-${i}`);
-        if (svgElement) {
-          if (window.innerWidth <= 615) {
+      if (svgElement) {
+        if (window.innerWidth <= 615) {
           if (i === 4) {
             svgElement.outerHTML = getMobileSVGContent(i);
           } else {

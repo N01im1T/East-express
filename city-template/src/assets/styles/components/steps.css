@@ -1,11 +1,11 @@
 .steps {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3.5rem;
+
   margin-right: 1.5rem;
   margin-left: 1.5rem;
   padding: 6rem 6rem 6rem 6rem;
-}
-
-.steps h2 {
-  margin-bottom: 3.5rem;
 }
 
 .steps-container {
@@ -133,12 +133,10 @@
 
 @media (max-width: 489px) {
   .steps {
+    row-gap: 1rem;
+
     margin: 0 0.5rem 0 0.5rem;
     padding: 1.5rem 1rem 1.5rem 1rem;
-  }
-
-  .steps h2 {
-    margin-bottom: 1rem;
   }
 
   .step h3 {

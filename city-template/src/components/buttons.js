@@ -12,10 +12,11 @@ const buttons = () => {
   });
 
   function switchLanguage(language) {
-    if (language === "ru") {
-      window.location.href = "/city-template/public/ru/index.html";
-    } else if (language === "en") {
-      window.location.href = "/city-template/public/en/index.html";
+    const selectedBtn = language === "ru" ? ruBtn : enBtn;
+    const url = selectedBtn.getAttribute("data-url");
+
+    if (url) {
+      window.location.href = url;
     }
   }
 

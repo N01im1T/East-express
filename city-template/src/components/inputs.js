@@ -1,8 +1,46 @@
+import dictionary from "./modals-dictionary.json";
+
 const inputs = (container = document) => {
-  container.querySelectorAll(".styled-input").forEach((input) => {
-    if (input.id !== "message") {
+  const rawLanguage = document.documentElement.lang;
+  const language = rawLanguage ? rawLanguage.toLowerCase().split("-")[0] : "";
+  const selectedLanguage = dictionary[language] ? language : "en";
+  const messages = dictionary[selectedLanguage];
+
+  const fieldsMap = {
+    name: {
+      originalText: messages.name,
+      errorMessage: messages.nameError,
+    },
+    email: {
+      originalText: messages.email,
+      errorMessage: messages.emailError,
+    },
+    telephone: {
+      originalText: messages.phone,
+      errorMessage: messages.phoneError,
+    },
+    message: {
+      originalText: messages.message,
+      errorMessage: null,
+    },
+  };
+
+  container.querySelectorAll(".input-container").forEach((inputContainer) => {
+    const input = inputContainer.querySelector(".styled-input");
+    const label = inputContainer.querySelector(".floating-label");
+    const fieldId = input.id;
+
+    if (fieldsMap[fieldId]) {
+      const { originalText, errorMessage } = fieldsMap[fieldId];
+
+      label.setAttribute("data-original-text", originalText);
+      if (errorMessage) {
+        label.setAttribute("data-error-message", errorMessage);
+      }
+
+      label.textContent = originalText;
+
       input.addEventListener("input", () => {
-        const label = input.nextElementSibling;
         if (input.value.trim() === "") {
           label.textContent = label.getAttribute("data-original-text");
           return;
@@ -19,16 +57,16 @@ const inputs = (container = document) => {
     }
   });
 
-  container.querySelectorAll('input[type="tel"]').forEach(function (input) {
-    input.addEventListener("input", function (e) {
-      this.value = this.value.replace(/\D/, "");
+  container.querySelectorAll('input[type="tel"]').forEach((input) => {
+    input.addEventListener("input", (e) => {
+      input.value = input.value.replace(/\D/g, "");
     });
 
-    input.addEventListener("paste", function (e) {
+    input.addEventListener("paste", (e) => {
       e.preventDefault();
     });
 
-    input.addEventListener("drop", function (e) {
+    input.addEventListener("drop", (e) => {
       e.preventDefault();
     });
   });

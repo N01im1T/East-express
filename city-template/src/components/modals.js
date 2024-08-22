@@ -58,7 +58,7 @@ const modals = () => {
 
     citiesData.forEach((city) => {
       const cityItem = document.createElement("li");
-      const cityUrl = "https://www." + city.url;
+      const cityUrl = `https://www.${city.url}`;
       cityItem.setAttribute("data-url", cityUrl);
       cityItem.classList.add("city-item");
 
@@ -66,7 +66,9 @@ const modals = () => {
       cityItemButton.setAttribute("type", "button");
       cityItemButton.classList.add("city-item-button");
 
-      const cityItemName = document.createTextNode(city.name);
+      const cityItemName = language === "ru"
+      ? document.createTextNode(city.name)
+      : document.createTextNode(city.name_en);
       cityItemButton.appendChild(cityItemName);
 
       cityItemButton.insertAdjacentHTML("beforeend", checkMarkIcon);
@@ -143,9 +145,9 @@ const modals = () => {
       <input type="text"  id="name" name="name" class="styled-input"
       pattern="[a-zA-Zа-яА-Я]{2,11}" placeholder=" " required>
       <label for="name" class="floating-label"
-      data-original-text="${messages.address}"
-      data-error-message="${messages.addressError}">
-        ${messages.address}
+      data-original-text="${messages.name}"
+      data-error-message="${messages.nameError}">
+        ${messages.name}
       </label>
   `;
   userEmailInput.innerHTML = `

@@ -1,7 +1,7 @@
 {
   "en": {
-    "address": "How can we address you?",
-    "addressError": "How can we address you? (incorrect input)",
+    "name": "How can we address you?",
+    "nameError": "How can we address you? (incorrect input)",
     "email": "Your e-mail",
     "emailError": "Your e-mail (incorrect input)",
     "phone": "Your phone number",
@@ -17,8 +17,8 @@
     "chooseCityError": "Please, choose your city"
   },
   "ru": {
-    "address": "Как к вам обращаться?",
-    "addressError": "Как к вам обращаться? (не верный ввод)",
+    "name": "Как к вам обращаться?",
+    "nameError": "Как к вам обращаться? (не верный ввод)",
     "email": "Ваша электронная почта",
     "emailError": "Ваша электронная почта (не верный ввод)",
     "phone": "Ваш номер телефона",

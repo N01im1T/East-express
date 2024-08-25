@@ -7,6 +7,35 @@ import briefcaseIcon from "/city-template/public/assets/images/transport/briefca
 import dictionary from "./modals-dictionary.json";
 
 const modals = () => {
+  const createElement = (tag, classNames = [], innerHTML = "") => {
+    const element = document.createElement(tag);
+    classNames.forEach((className) => element.classList.add(className));
+    element.innerHTML = innerHTML;
+    return element;
+  };
+
+  const createInputContainer = (
+    id,
+    type,
+    name,
+    pattern,
+    originalText,
+    errorMessage,
+    labelContent,
+  ) => {
+    const inputContainer = createElement("div", ["input-container"]);
+    inputContainer.innerHTML = `
+      <input type="${type}" id="${id}" name="${name}" class="styled-input" 
+        pattern="${pattern}" placeholder=" " required>
+      <label for="${id}" class="floating-label" 
+        data-original-text="${originalText}" 
+        data-error-message="${errorMessage}">
+        ${labelContent}
+      </label>
+    `;
+    return inputContainer;
+  };
+
   // Get the value of the lang attribute
   const rawLanguage = document.documentElement.lang;
   const language = rawLanguage ? rawLanguage.toLowerCase().split("-")[0] : "";
@@ -14,17 +43,16 @@ const modals = () => {
   const selectedLanguage = dictionary[language] ? language : "en";
   const messages = dictionary[selectedLanguage];
 
-  const modal = document.createElement("div");
-  modal.classList.add("modal");
-  const modalContainer = document.createElement("div");
+  const modal = createElement("div", ["modal"]);
+  const modalContainer = createElement("div");
   modal.appendChild(modalContainer);
 
-  const header = document.createElement("h4");
-  const closeButton = document.createElement("button");
-  closeButton.classList.add("close-icon");
-  closeButton.innerHTML = `
-      <img src="${closeIcon}" alt="close-icon">
-  `;
+  const header = createElement("h4");
+  const closeButton = createElement(
+    "button",
+    ["close-icon"],
+    `<img src="${closeIcon}" alt="close-icon">`,
+  );
 
   // Choose city modal
   const cityList = document.createElement("ul");
@@ -35,8 +63,9 @@ const modals = () => {
       </svg>
   `;
 
-  var citiesData = [];
-  var citiesLoaded = false;
+  let citiesData = [];
+  let citiesLoaded = false;
+  let selectedCity = null;
 
   async function loadCities() {
     try {
@@ -57,33 +86,22 @@ const modals = () => {
     cityList.innerHTML = "";
 
     citiesData.forEach((city) => {
-      const cityItem = document.createElement("li");
-      const cityUrl = `https://www.${city.url}`;
-      cityItem.setAttribute("data-url", cityUrl);
-      cityItem.classList.add("city-item");
+      const cityItem = createElement("li", ["city-item"]);
+      cityItem.dataset.url = `https://www.${city.url}`;
 
-      const cityItemButton = document.createElement("button");
-      cityItemButton.setAttribute("type", "button");
-      cityItemButton.classList.add("city-item-button");
-
-      const cityItemName = language === "ru"
-      ? document.createTextNode(city.name)
-      : document.createTextNode(city.name_en);
-      cityItemButton.appendChild(cityItemName);
-
-      cityItemButton.insertAdjacentHTML("beforeend", checkMarkIcon);
+      const cityItemButton = createElement(
+        "button",
+        ["city-item-button"],
+        (language === "ru" ? city.name : city.name_en) + checkMarkIcon,
+      );
+      cityItemButton.type = "button";
 
       cityItemButton.addEventListener("click", () => {
-        if (cityItem.classList.contains("selected")) {
-          cityItem.classList.remove("selected");
-          selectedCity = null;
-        } else {
-          document.querySelectorAll("li.selected").forEach((item) => {
-            item.classList.remove("selected");
-          });
-          cityItem.classList.add("selected");
-          selectedCity = cityItem;
-        }
+        document
+          .querySelectorAll("li.selected")
+          .forEach((item) => item.classList.remove("selected"));
+        cityItem.classList.add("selected");
+        selectedCity = cityItem;
       });
 
       cityItem.appendChild(cityItemButton);
@@ -91,151 +109,97 @@ const modals = () => {
     });
   }
 
-  var selectedCity = null;
-
-  // Order modal
-  const orderFormWrapper = document.createElement("div");
-  orderFormWrapper.classList.add("order-form-wrapper");
-
-  const orderInputs = document.createElement("div");
-  orderInputs.classList.add("order-inputs");
-
-  const transportCard = document.createElement("div");
-  transportCard.classList.add("transport-card");
-
-  transportCard.innerHTML = `
-      <div class="transport-card-goods">
-          <div class="transport-card-goods-passenger">
-              <img src="${userIcon}" alt="passenger-icon" />
-              <span class="passenger-amount"></span>
-          </div>
-          <div class="transport-card-goods-luggage">
-              <img src="${briefcaseIcon}" alt="luggage-icon" />
-              <span class="luggage-amount"></span>
-          </div>
-      </div>
-      <img class="transport-img" src="../assets/images/transport/toyota corolla.png" alt="transport-img" />
-      <span class="transport-quality">Стандарт</span>
-      <p class="transport-price">
-          <span>от</span>
-          <span class="price">13000</span>
-          <span class="currency">₽</span>
-      </p>
-  `;
-
-  const form = document.createElement("form");
-  form.setAttribute("action", "/submit");
-  form.setAttribute("method", "post");
-
-  const userNameInput = document.createElement("div");
-  const userEmailInput = document.createElement("div");
-  const userPhoneInput = document.createElement("div");
-  const userMessageInput = document.createElement("div");
-  const hiddenInput = document.createElement("input");
-
-  userNameInput.classList.add("input-container");
-  userEmailInput.classList.add("input-container");
-  userPhoneInput.classList.add("input-container");
-  userMessageInput.classList.add("input-container");
-  hiddenInput.setAttribute("type", "hidden");
-  hiddenInput.setAttribute("name", "city");
-  hiddenInput.setAttribute("value", " ");
-
-  userNameInput.innerHTML = `
-      <input type="text"  id="name" name="name" class="styled-input"
-      pattern="[a-zA-Zа-яА-Я]{2,11}" placeholder=" " required>
-      <label for="name" class="floating-label"
-      data-original-text="${messages.name}"
-      data-error-message="${messages.nameError}">
-        ${messages.name}
-      </label>
-  `;
-  userEmailInput.innerHTML = `
-      <input type="email"  id="email" name="email" class="styled-input"
-      placeholder=" " required>
-      <label for="email" class="floating-label"
-      data-original-text="${messages.email}"
-      data-error-message="${messages.emailError}">
-        ${messages.email}
-      </label>
-  `;
-  userPhoneInput.innerHTML = `
-      <input type="tel" id="telephone" name="telephone" class="styled-input"
-      pattern="\\+?[0-9]{1,4}?[-.\\s]?(\\(?\\d{1,3}?\\)?[-.\\s]?)?[\\d-\\s]{5,10}"
-      placeholder=" " required>
-      <label for="telephone" class="floating-label"
-      data-original-text="${messages.phone}"
-      data-error-message="${messages.phoneError}">
-        ${messages.phone}
-      </label>
-  `;
-  userMessageInput.innerHTML = `
-      <input type="text"  id="message" name="message" class="styled-input"
-      placeholder=" ">
-      <label for="message" class="floating-label">
-        ${messages.message}
-      </label>
-  `;
-
-  const submitButton = document.createElement("button");
-
-  const dataProcessing = document.createElement("p");
-  dataProcessing.classList.add("personal-data-processing");
-  dataProcessing.innerHTML = messages.personalDataProcessing;
-
-  function createAndShowModal(btn) {
-    modal.classList.remove("fade-out");
-    modalContainer.classList.value = "";
-    modalContainer.classList.add("modal-container");
+  function createFormContent(btn) {
+    modalContainer.className = "modal-container";
     modalContainer.innerHTML = "";
-
     cityList.innerHTML = "";
 
-    form.innerHTML = "";
-    form.classList.value = "";
+    const hiddenInput = createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = "city";
+    hiddenInput.value = " ";
 
-    submitButton.removeAttribute("type");
-    submitButton.classList.value = "";
-    submitButton.classList.add("btn", "btn-primary");
+    const form = createElement("form");
+    form.action = "/submit";
+    form.method = "post";
+
+    const userNameInput = createInputContainer(
+      "name",
+      "text",
+      "name",
+      "[a-zA-Zа-яА-Я]{2,11}",
+      messages.name,
+      messages.nameError,
+      messages.name,
+    );
+    const userPhoneInput = createInputContainer(
+      "telephone",
+      "tel",
+      "telephone",
+      "\\+?[0-9]{1,4}?[-.\\s]?(\\(?\\d{1,3}?\\)?[-.\\s]?)?[\\d-\\s]{5,10}",
+      messages.phone,
+      messages.phoneError,
+      messages.phone,
+    );
+    const userEmailInput = createInputContainer(
+      "email",
+      "email",
+      "email",
+      "",
+      messages.email,
+      messages.emailError,
+      messages.email,
+    );
+    const userMessageInput = createInputContainer(
+      "message",
+      "text",
+      "message",
+      "",
+      "",
+      "",
+      messages.message,
+    );
+
+    const submitButton = createElement("button", ["btn", "btn-primary"]);
+    const dataProcessing = createElement(
+      "p",
+      ["personal-data-processing"],
+      messages.personalDataProcessing,
+    );
 
     switch (btn) {
       case "btn-call-me-back":
         header.textContent = messages.callMeBack;
 
-        form.classList.add("reply-form");
-
-        submitButton.classList.add("btn-call-me-back");
-        submitButton.setAttribute("type", "submit");
         submitButton.textContent = messages.callMeBack;
+        submitButton.classList.add("btn-call-me-back");
+        submitButton.type = "submit";
 
+        form.classList.add("reply-form");
         form.append(userNameInput, userPhoneInput, hiddenInput, submitButton);
-        modalContainer.append(header, closeButton, form, dataProcessing);
 
         break;
 
       case "btn-become-our-partner":
         header.textContent = messages.becomePartner;
 
-        form.classList.add("reply-form");
-
-        submitButton.classList.add("btn-call-me-back");
-        submitButton.setAttribute("type", "submit");
         submitButton.textContent = messages.callMeBack;
+        submitButton.classList.add("btn-call-me-back");
+        submitButton.type = "submit";
 
+        form.classList.add("reply-form");
         form.append(userNameInput, userPhoneInput, hiddenInput, submitButton);
-        modalContainer.append(header, closeButton, form, dataProcessing);
 
         break;
 
       case "btn-get-transfer-cost":
         header.textContent = messages.transferCost;
 
-        form.classList.add("calculator-form");
-
         submitButton.classList.add("btn-calculate-price");
-        submitButton.setAttribute("type", "submit");
         submitButton.textContent = messages.calculateCost;
+        submitButton.type = "submit";
 
+        form.classList.add("reply-form");
         form.append(
           userNameInput,
           userEmailInput,
@@ -244,8 +208,6 @@ const modals = () => {
           hiddenInput,
           submitButton,
         );
-
-        modalContainer.append(header, closeButton, form, dataProcessing);
 
         break;
 
@@ -261,18 +223,15 @@ const modals = () => {
         }
 
         submitButton.classList.add("btn-choose-city");
-        submitButton.setAttribute("type", "button");
+        submitButton.type = "button";
         submitButton.textContent = messages.choose;
         submitButton.addEventListener("click", () => {
           if (selectedCity) {
-            const url = selectedCity.getAttribute("data-url");
-            window.location.href = url;
+            window.location.href = selectedCity.dataset.url;
           } else {
             alert(messages.chooseCityError);
           }
         });
-
-        modalContainer.append(header, closeButton, cityList, submitButton);
 
         break;
 
@@ -281,12 +240,31 @@ const modals = () => {
 
         header.textContent = messages.transferCost;
 
-        form.classList.add("calculator-form");
-
-        submitButton.classList.add("btn-calculate-price");
-        submitButton.setAttribute("type", "submit");
-        submitButton.textContent = messages.calculateCost;
-
+        const orderFormWrapper = createElement("div", ["order-form-wrapper"]);
+        const orderInputs = createElement("div", ["order-inputs"]);
+        const transportCard = createElement(
+          "div",
+          ["transport-card"],
+          `
+          <div class="transport-card-goods">
+            <div class="transport-card-goods-passenger">
+              <img src="${userIcon}" alt="passenger-icon" />
+              <span class="passenger-amount"></span>
+            </div>
+            <div class="transport-card-goods-luggage">
+              <img src="${briefcaseIcon}" alt="luggage-icon" />
+              <span class="luggage-amount"></span>
+            </div>
+          </div>
+          <img class="transport-img" src="../assets/images/transport/toyota corolla.png" alt="transport-img" />
+          <span class="transport-quality">Стандарт</span>
+          <p class="transport-price">
+            <span>от</span>
+            <span class="price">13000</span>
+            <span class="currency">₽</span>
+          </p>
+        `,
+        );
         orderInputs.append(
           userNameInput,
           userEmailInput,
@@ -294,78 +272,74 @@ const modals = () => {
           userMessageInput,
           hiddenInput,
         );
-
         orderFormWrapper.append(orderInputs, transportCard, submitButton);
 
-        form.append(orderFormWrapper);
+        submitButton.classList.add("btn-calculate-price");
+        submitButton.type = "submit";
+        submitButton.textContent = messages.calculateCost;
 
-        modalContainer.append(header, closeButton, form, dataProcessing);
+        form.classList.add("calculator-form");
+        form.append(orderFormWrapper);
 
         break;
 
       default:
         console.log("There isn't such button");
-
         break;
     }
 
+    btn === "btn-choose-city"
+      ? modalContainer.append(header, closeButton, cityList, submitButton)
+      : modalContainer.append(header, closeButton, form, dataProcessing);
+  }
+
+  function createAndShowModal(btn) {
+    modal.classList.remove("fade-out");
+    createFormContent(btn);
     modal.classList.add("fade-in");
     document.body.appendChild(modal);
-
+    modal.style.display = "block";
     applyInputs();
     applyForms();
   }
 
+  // Event Listeners
   document
     .getElementById("btn-call-me-back")
-    .addEventListener("click", function () {
-      createAndShowModal("btn-call-me-back");
-      modal.style.display = "block";
-    });
-
+    .addEventListener("click", () => createAndShowModal("btn-call-me-back"));
   document
     .getElementById("btn-become-our-partner")
-    .addEventListener("click", function () {
-      createAndShowModal("btn-become-our-partner");
-      modal.style.display = "block";
-    });
+    .addEventListener("click", () =>
+      createAndShowModal("btn-become-our-partner"),
+    );
 
-  document.querySelectorAll(".btn-get-transfer-cost").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      createAndShowModal("btn-get-transfer-cost");
-      modal.style.display = "block";
-    });
-  });
+  document
+    .querySelectorAll(".btn-get-transfer-cost")
+    .forEach((btn) =>
+      btn.addEventListener("click", () =>
+        createAndShowModal("btn-get-transfer-cost"),
+      ),
+    );
+
   document
     .getElementById("btn-choose-city")
-    .addEventListener("click", function () {
-      createAndShowModal("btn-choose-city");
-      modal.style.display = "block";
-    });
+    .addEventListener("click", () => createAndShowModal("btn-choose-city"));
+
   document.querySelectorAll(".btn-order").forEach((btn) => {
     btn.addEventListener("click", function () {
       createAndShowModal("btn-order");
-      modal.style.display = "block";
 
       const transportCard = this.closest(".transport-card");
-
-      const passengerAmount =
-        transportCard.querySelector(".passenger-amount").textContent;
-      const luggageAmount =
-        transportCard.querySelector(".luggage-amount").textContent;
-      const transportImgSrc = transportCard.querySelector(".transport-img").src;
-      const transportQuality =
-        transportCard.querySelector(".transport-quality").textContent;
-      const transportPrice = transportCard.querySelector(".price").textContent;
-
       modalContainer.querySelector(".passenger-amount").textContent =
-        passengerAmount;
+        transportCard.querySelector(".passenger-amount").textContent;
       modalContainer.querySelector(".luggage-amount").textContent =
-        luggageAmount;
-      modalContainer.querySelector(".transport-img").src = transportImgSrc;
+        transportCard.querySelector(".luggage-amount").textContent;
+      modalContainer.querySelector(".transport-img").src =
+        transportCard.querySelector(".transport-img").src;
       modalContainer.querySelector(".transport-quality").textContent =
-        transportQuality;
-      modalContainer.querySelector(".price").textContent = transportPrice;
+        transportCard.querySelector(".transport-quality").textContent;
+      modalContainer.querySelector(".price").textContent =
+        transportCard.querySelector(".price").textContent;
     });
   });
 
@@ -373,9 +347,7 @@ const modals = () => {
     modal.classList.remove("fade-in");
     modal.classList.add("fade-out");
     modal.style.display = "none";
-    setTimeout(() => {
-      modal.remove();
-    }, 500);
+    setTimeout(() => modal.remove(), 600);
   });
 
   window.addEventListener("click", (event) => {
@@ -383,9 +355,7 @@ const modals = () => {
       modal.classList.remove("fade-in");
       modal.classList.add("fade-out");
       modal.style.display = "none";
-      setTimeout(() => {
-        modal.remove();
-      }, 500);
+      setTimeout(() => modal.remove(), 600);
     }
   });
 

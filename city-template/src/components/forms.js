@@ -20,13 +20,12 @@ const forms = (container = document) => {
   const message = messages[selectedLang];
 
   const postData = async (url, data) => {
-    document.querySelector(".status").textContent = message.loading;
     let res = await fetch(url, {
       method: "POST",
       body: data,
     });
 
-    return await res.text();
+    return await res.ym(98139263,'reachGoal','success.form');
   };
 
   const clearInputs = () => {

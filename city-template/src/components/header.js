@@ -8,7 +8,7 @@ const header = () => {
   mobileBarOverlay.classList.add("mobile-bar-overlay");
 
   function handleResize() {
-    if (window.innerWidth > 1200) {
+    if (window.innerWidth > 1250) {
       topBar.classList.remove("mobile-bar");
       topBar.classList.remove("active");
       topBar.classList.remove("deactive");

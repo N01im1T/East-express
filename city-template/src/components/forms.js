@@ -44,16 +44,17 @@ const forms = (container = document) => {
 
       postData(backend["ajax_url"], formData)
         .then((res) => {
-          console.log(res);
+          if (res.ok) {
+            createAndShowModal("btn-success-reply");
+          } else {
+            console.error('Error with response:', res.status);
+          }
         })
         .catch((error) => {
           console.log(error);
         })
         .finally(() => {
           clearInputs();
-          setTimeout(() => {
-            statusMessage.remove();
-          }, 5000);
         });
     });
   });

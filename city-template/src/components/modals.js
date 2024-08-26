@@ -4,25 +4,18 @@ import { default as applyForms } from "./forms.js";
 import closeIcon from "/city-template/public/assets/images/modals/close-window-btn.svg";
 import userIcon from "/city-template/public/assets/images/transport/user-icon.svg";
 import briefcaseIcon from "/city-template/public/assets/images/transport/briefcase-icon.svg";
+import successIcon from "/city-template/public/assets/images/modals/success-icon.svg";
 import dictionary from "./modals-dictionary.json";
 
 const modals = () => {
-  const createElement = (tag, classNames = [], innerHTML = "") => {
+  function createElement(tag, classNames = [], innerHTML = "") {
     const element = document.createElement(tag);
     classNames.forEach((className) => element.classList.add(className));
     element.innerHTML = innerHTML;
     return element;
   };
 
-  const createInputContainer = (
-    id,
-    type,
-    name,
-    pattern,
-    originalText,
-    errorMessage,
-    labelContent,
-  ) => {
+  function createInputContainer(id, type, name, pattern, originalText, errorMessage, labelContent,) {
     const inputContainer = createElement("div", ["input-container"]);
     inputContainer.innerHTML = `
       <input type="${type}" id="${id}" name="${name}" class="styled-input" 
@@ -166,131 +159,153 @@ const modals = () => {
       ["personal-data-processing"],
       messages.personalDataProcessing,
     );
-
-    switch (btn) {
-      case "btn-call-me-back":
-        header.textContent = messages.callMeBack;
-
-        submitButton.textContent = messages.callMeBack;
-        submitButton.classList.add("btn-call-me-back");
-        submitButton.type = "submit";
-
-        form.classList.add("reply-form");
-        form.append(userNameInput, userPhoneInput, hiddenInput, submitButton);
-
-        break;
-
-      case "btn-become-our-partner":
-        header.textContent = messages.becomePartner;
-
-        submitButton.textContent = messages.callMeBack;
-        submitButton.classList.add("btn-call-me-back");
-        submitButton.type = "submit";
-
-        form.classList.add("reply-form");
-        form.append(userNameInput, userPhoneInput, hiddenInput, submitButton);
-
-        break;
-
-      case "btn-get-transfer-cost":
-        header.textContent = messages.transferCost;
-
-        submitButton.classList.add("btn-calculate-price");
-        submitButton.textContent = messages.calculateCost;
-        submitButton.type = "submit";
-
-        form.classList.add("reply-form");
-        form.append(
-          userNameInput,
-          userEmailInput,
-          userPhoneInput,
-          userMessageInput,
-          hiddenInput,
-          submitButton,
-        );
-
-        break;
-
-      case "btn-choose-city":
-        modalContainer.classList.add("choose-city-modal");
-
-        header.textContent = messages.chooseCity;
-
-        if (citiesLoaded) {
-          displayCities();
-        } else {
-          cityList.innerHTML = "<p>Загрузка городов...</p>";
-        }
-
-        submitButton.classList.add("btn-choose-city");
-        submitButton.type = "button";
-        submitButton.textContent = messages.choose;
-        submitButton.addEventListener("click", () => {
-          if (selectedCity) {
-            window.location.href = selectedCity.dataset.url;
+  
+    const orderFormWrapper = createElement("div", ["order-form-wrapper"]);
+    const orderInputs = createElement("div", ["order-inputs"]);
+    const successContent = createElement("div", ["success-content"]);
+    
+    // Configured object
+    const modalConfig = {
+      "btn-call-me-back": {
+        headerText: messages.callMeBack,
+        setup: () => {
+          submitButton.textContent = messages.callMeBack;
+          submitButton.classList.add("btn-call-me-back");
+          submitButton.type = "submit";
+  
+          form.classList.add("reply-form");
+          form.append(userNameInput, userPhoneInput, hiddenInput, submitButton);
+        },
+        elements: [header, closeButton, form, dataProcessing],
+      },
+      "btn-become-our-partner": {
+        headerText: messages.becomePartner,
+        setup: () => {
+          submitButton.textContent = messages.callMeBack;
+          submitButton.classList.add("btn-call-me-back");
+          submitButton.type = "submit";
+  
+          form.classList.add("reply-form");
+          form.append(userNameInput, userPhoneInput, hiddenInput, submitButton);
+        },
+        elements: [header, closeButton, form, dataProcessing],
+      },
+      "btn-get-transfer-cost": {
+        headerText: messages.transferCost,
+        setup: () => {
+          submitButton.textContent = messages.calculateCost;
+          submitButton.classList.add("btn-calculate-price");
+          submitButton.type = "submit";
+  
+          form.classList.add("reply-form");
+          form.append(
+            userNameInput,
+            userEmailInput,
+            userPhoneInput,
+            userMessageInput,
+            hiddenInput,
+            submitButton
+          );
+        },
+        elements: [header, closeButton, form, dataProcessing],
+      },
+      "btn-choose-city": {
+        headerText: messages.chooseCity,
+        setup: () => {
+          modalContainer.classList.add("choose-city-modal");
+  
+          if (citiesLoaded) {
+            displayCities();
           } else {
-            alert(messages.chooseCityError);
+            cityList.innerHTML = "<p>Загрузка городов...</p>";
           }
-        });
-
-        break;
-
-      case "btn-order":
-        modalContainer.classList.add("modal-order");
-
-        header.textContent = messages.transferCost;
-
-        const orderFormWrapper = createElement("div", ["order-form-wrapper"]);
-        const orderInputs = createElement("div", ["order-inputs"]);
-        const transportCard = createElement(
-          "div",
-          ["transport-card"],
+  
+          submitButton.classList.add("btn-choose-city");
+          submitButton.type = "button";
+          submitButton.textContent = messages.choose;
+          submitButton.addEventListener("click", () => {
+            if (selectedCity) {
+              window.location.href = selectedCity.dataset.url;
+            } else {
+              alert(messages.chooseCityError);
+            }
+          });
+        },
+        elements: [header, closeButton, cityList, submitButton],
+      },
+      "btn-order": {
+        headerText: messages.transferCost,
+        setup: () => {
+          modalContainer.classList.add("modal-order");
+  
+          const transportCard = createElement(
+            "div",
+            ["transport-card"],
+            `
+            <div class="transport-card-goods">
+              <div class="transport-card-goods-passenger">
+                <img src="${userIcon}" alt="passenger-icon" />
+                <span class="passenger-amount"></span>
+              </div>
+              <div class="transport-card-goods-luggage">
+                <img src="${briefcaseIcon}" alt="luggage-icon" />
+                <span class="luggage-amount"></span>
+              </div>
+            </div>
+            <img class="transport-img" src="../assets/images/transport/toyota corolla.png" alt="transport-img" />
+            <span class="transport-quality">Стандарт</span>
+            <p class="transport-price">
+              <span>от</span>
+              <span class="price">13000</span>
+              <span class="currency">₽</span>
+            </p>
           `
-          <div class="transport-card-goods">
-            <div class="transport-card-goods-passenger">
-              <img src="${userIcon}" alt="passenger-icon" />
-              <span class="passenger-amount"></span>
+          );
+          orderInputs.append(
+            userNameInput,
+            userEmailInput,
+            userPhoneInput,
+            userMessageInput,
+            hiddenInput
+          );
+          orderFormWrapper.append(orderInputs, transportCard, submitButton);
+  
+          submitButton.classList.add("btn-calculate-price");
+          submitButton.type = "submit";
+          submitButton.textContent = messages.calculateCost;
+  
+          form.classList.add("calculator-form");
+          form.append(orderFormWrapper);
+        },
+        elements: [header, closeButton, form],
+      },
+      "btn-success-reply": {
+        headerText: messages.successfullReplyHeader,
+        setup: () => {
+          modalContainer.classList.add("modal-success-reply");
+  
+          successContent.innerHTML = `
+            <div class="modal-success-container">
+              <img src="${successIcon}" alt="success-icon">
+              <p class="text-success-reply">${messages.successfullReplyParagraph}</p>
             </div>
-            <div class="transport-card-goods-luggage">
-              <img src="${briefcaseIcon}" alt="luggage-icon" />
-              <span class="luggage-amount"></span>
-            </div>
-          </div>
-          <img class="transport-img" src="../assets/images/transport/toyota corolla.png" alt="transport-img" />
-          <span class="transport-quality">Стандарт</span>
-          <p class="transport-price">
-            <span>от</span>
-            <span class="price">13000</span>
-            <span class="currency">₽</span>
-          </p>
-        `,
-        );
-        orderInputs.append(
-          userNameInput,
-          userEmailInput,
-          userPhoneInput,
-          userMessageInput,
-          hiddenInput,
-        );
-        orderFormWrapper.append(orderInputs, transportCard, submitButton);
+          `;
 
-        submitButton.classList.add("btn-calculate-price");
-        submitButton.type = "submit";
-        submitButton.textContent = messages.calculateCost;
-
-        form.classList.add("calculator-form");
-        form.append(orderFormWrapper);
-
-        break;
-
-      default:
-        console.log("There isn't such button");
-        break;
+          setTimeout(() => closeModal(), 3000);
+        },
+        elements: [header, closeButton, successContent],
+      },
+    };
+  
+    const config = modalConfig[btn];
+  
+    if (config) {
+      header.textContent = config.headerText;
+      config.setup();
+      config.elements.forEach((element) => modalContainer.appendChild(element));
+    } else {
+      console.error("Unknown button type");
     }
-
-    btn === "btn-choose-city"
-      ? modalContainer.append(header, closeButton, cityList, submitButton)
-      : modalContainer.append(header, closeButton, form, dataProcessing);
   }
 
   function createAndShowModal(btn) {
@@ -343,19 +358,20 @@ const modals = () => {
     });
   });
 
-  closeButton.addEventListener("click", () => {
+  function closeModal() {
     modal.classList.remove("fade-in");
     modal.classList.add("fade-out");
     modal.style.display = "none";
     setTimeout(() => modal.remove(), 600);
+  }
+
+  closeButton.addEventListener("click", () => {
+    closeModal();
   });
 
   window.addEventListener("click", (event) => {
     if (event.target === modal) {
-      modal.classList.remove("fade-in");
-      modal.classList.add("fade-out");
-      modal.style.display = "none";
-      setTimeout(() => modal.remove(), 600);
+      closeModal();
     }
   });
 

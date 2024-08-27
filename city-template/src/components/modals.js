@@ -4,199 +4,197 @@ import { default as applyForms } from "./forms.js";
 import closeIcon from "/city-template/public/assets/images/modals/close-window-btn.svg";
 import userIcon from "/city-template/public/assets/images/transport/user-icon.svg";
 import briefcaseIcon from "/city-template/public/assets/images/transport/briefcase-icon.svg";
+import successIcon from "/city-template/public/assets/images/modals/success-icon.svg";
 import dictionary from "./modals-dictionary.json";
 
-const modals = () => {
-  const createElement = (tag, classNames = [], innerHTML = "") => {
-    const element = document.createElement(tag);
-    classNames.forEach((className) => element.classList.add(className));
-    element.innerHTML = innerHTML;
-    return element;
-  };
 
-  const createInputContainer = (
-    id,
-    type,
-    name,
-    pattern,
-    originalText,
-    errorMessage,
-    labelContent,
-  ) => {
-    const inputContainer = createElement("div", ["input-container"]);
-    inputContainer.innerHTML = `
-      <input type="${type}" id="${id}" name="${name}" class="styled-input" 
-        pattern="${pattern}" placeholder=" " required>
-      <label for="${id}" class="floating-label" 
-        data-original-text="${originalText}" 
-        data-error-message="${errorMessage}">
-        ${labelContent}
-      </label>
-    `;
-    return inputContainer;
-  };
+function createElement(tag, classNames = [], innerHTML = "") {
+  const element = document.createElement(tag);
+  classNames.forEach((className) => element.classList.add(className));
+  element.innerHTML = innerHTML;
+  return element;
+};
 
-  // Get the value of the lang attribute
-  const rawLanguage = document.documentElement.lang;
-  const language = rawLanguage ? rawLanguage.toLowerCase().split("-")[0] : "";
+function createInputContainer(id, type, name, pattern, originalText, errorMessage, labelContent,) {
+  const inputContainer = createElement("div", ["input-container"]);
+  inputContainer.innerHTML = `
+    <input type="${type}" id="${id}" name="${name}" class="styled-input" 
+      pattern="${pattern}" placeholder=" " required>
+    <label for="${id}" class="floating-label" 
+      data-original-text="${originalText}" 
+      data-error-message="${errorMessage}">
+      ${labelContent}
+    </label>
+  `;
+  return inputContainer;
+};
 
-  const selectedLanguage = dictionary[language] ? language : "en";
-  const messages = dictionary[selectedLanguage];
+// Get the value of the lang attribute
+const rawLanguage = document.documentElement.lang;
+const language = rawLanguage ? rawLanguage.toLowerCase().split("-")[0] : "";
 
-  const modal = createElement("div", ["modal"]);
-  const modalContainer = createElement("div");
-  modal.appendChild(modalContainer);
+const selectedLanguage = dictionary[language] ? language : "en";
+const messages = dictionary[selectedLanguage];
 
-  const header = createElement("h4");
-  const closeButton = createElement(
-    "button",
-    ["close-icon"],
-    `<img src="${closeIcon}" alt="close-icon">`,
+const modal = createElement("div", ["modal"]);
+const modalContainer = createElement("div");
+modal.appendChild(modalContainer);
+
+const header = createElement("h4");
+const closeButton = createElement(
+  "button",
+  ["close-icon"],
+  `<img src="${closeIcon}" alt="close-icon">`,
+);
+
+// Choose city modal
+const cityList = document.createElement("ul");
+cityList.classList.add("city-list");
+const checkMarkIcon = `
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="check-mark-color" d="M20 6L9 17L4 12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+`;
+
+let citiesData = [];
+let citiesLoaded = false;
+let selectedCity = null;
+
+async function loadCities() {
+  try {
+    const response = await fetch(
+      "https://avto2a.ru/wp-admin/admin-ajax.php?action=get_cities",
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    citiesData = await response.json();
+    citiesLoaded = true;
+  } catch (error) {
+    console.error("Fetching cities failed:", error);
+  }
+}
+
+function displayCities() {
+  cityList.innerHTML = "";
+
+  citiesData.forEach((city) => {
+    const cityItem = createElement("li", ["city-item"]);
+    cityItem.dataset.url = `https://www.${city.url}`;
+
+    const cityItemButton = createElement(
+      "button",
+      ["city-item-button"],
+      (language === "ru" ? city.name : city.name_en) + checkMarkIcon,
+    );
+    cityItemButton.type = "button";
+
+    cityItemButton.addEventListener("click", () => {
+      document
+        .querySelectorAll("li.selected")
+        .forEach((item) => item.classList.remove("selected"));
+      cityItem.classList.add("selected");
+      selectedCity = cityItem;
+    });
+
+    cityItem.appendChild(cityItemButton);
+    cityList.appendChild(cityItem);
+  });
+}
+
+function createFormContent(btn) {
+  modalContainer.className = "modal-container";
+  modalContainer.innerHTML = "";
+  cityList.innerHTML = "";
+
+  const hiddenInput = createElement("input");
+  hiddenInput.type = "hidden";
+  hiddenInput.name = "city";
+  hiddenInput.value = " ";
+
+  const form = createElement("form");
+  form.action = "/submit";
+  form.method = "post";
+
+  const userNameInput = createInputContainer(
+    "name",
+    "text",
+    "name",
+    "[a-zA-Zа-яА-Я]{2,11}",
+    messages.name,
+    messages.nameError,
+    messages.name,
+  );
+  const userPhoneInput = createInputContainer(
+    "telephone",
+    "tel",
+    "telephone",
+    "\\+?[0-9]{1,4}?[-.\\s]?(\\(?\\d{1,3}?\\)?[-.\\s]?)?[\\d-\\s]{5,10}",
+    messages.phone,
+    messages.phoneError,
+    messages.phone,
+  );
+  const userEmailInput = createInputContainer(
+    "email",
+    "email",
+    "email",
+    "",
+    messages.email,
+    messages.emailError,
+    messages.email,
+  );
+  const userMessageInput = createInputContainer(
+    "message",
+    "text",
+    "message",
+    "",
+    "",
+    "",
+    messages.message,
   );
 
-  // Choose city modal
-  const cityList = document.createElement("ul");
-  cityList.classList.add("city-list");
-  const checkMarkIcon = `
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path class="check-mark-color" d="M20 6L9 17L4 12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-  `;
+  const submitButton = createElement("button", ["btn", "btn-primary"]);
+  const dataProcessing = createElement(
+    "p",
+    ["personal-data-processing"],
+    messages.personalDataProcessing,
+  );
 
-  let citiesData = [];
-  let citiesLoaded = false;
-  let selectedCity = null;
-
-  async function loadCities() {
-    try {
-      const response = await fetch(
-        "https://avto2a.ru/wp-admin/admin-ajax.php?action=get_cities",
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      citiesData = await response.json();
-      citiesLoaded = true;
-    } catch (error) {
-      console.error("Fetching cities failed:", error);
-    }
-  }
-
-  function displayCities() {
-    cityList.innerHTML = "";
-
-    citiesData.forEach((city) => {
-      const cityItem = createElement("li", ["city-item"]);
-      cityItem.dataset.url = `https://www.${city.url}`;
-
-      const cityItemButton = createElement(
-        "button",
-        ["city-item-button"],
-        (language === "ru" ? city.name : city.name_en) + checkMarkIcon,
-      );
-      cityItemButton.type = "button";
-
-      cityItemButton.addEventListener("click", () => {
-        document
-          .querySelectorAll("li.selected")
-          .forEach((item) => item.classList.remove("selected"));
-        cityItem.classList.add("selected");
-        selectedCity = cityItem;
-      });
-
-      cityItem.appendChild(cityItemButton);
-      cityList.appendChild(cityItem);
-    });
-  }
-
-  function createFormContent(btn) {
-    modalContainer.className = "modal-container";
-    modalContainer.innerHTML = "";
-    cityList.innerHTML = "";
-
-    const hiddenInput = createElement("input");
-    hiddenInput.type = "hidden";
-    hiddenInput.name = "city";
-    hiddenInput.value = " ";
-
-    const form = createElement("form");
-    form.action = "/submit";
-    form.method = "post";
-
-    const userNameInput = createInputContainer(
-      "name",
-      "text",
-      "name",
-      "[a-zA-Zа-яА-Я]{2,11}",
-      messages.name,
-      messages.nameError,
-      messages.name,
-    );
-    const userPhoneInput = createInputContainer(
-      "telephone",
-      "tel",
-      "telephone",
-      "\\+?[0-9]{1,4}?[-.\\s]?(\\(?\\d{1,3}?\\)?[-.\\s]?)?[\\d-\\s]{5,10}",
-      messages.phone,
-      messages.phoneError,
-      messages.phone,
-    );
-    const userEmailInput = createInputContainer(
-      "email",
-      "email",
-      "email",
-      "",
-      messages.email,
-      messages.emailError,
-      messages.email,
-    );
-    const userMessageInput = createInputContainer(
-      "message",
-      "text",
-      "message",
-      "",
-      "",
-      "",
-      messages.message,
-    );
-
-    const submitButton = createElement("button", ["btn", "btn-primary"]);
-    const dataProcessing = createElement(
-      "p",
-      ["personal-data-processing"],
-      messages.personalDataProcessing,
-    );
-
-    switch (btn) {
-      case "btn-call-me-back":
-        header.textContent = messages.callMeBack;
-
+  const orderFormWrapper = createElement("div", ["order-form-wrapper"]);
+  const orderInputs = createElement("div", ["order-inputs"]);
+  const successContent = createElement("div", ["success-content"]);
+  
+  // Configured object
+  const modalConfig = {
+    "btn-call-me-back": {
+      headerText: messages.callMeBack,
+      setup: () => {
         submitButton.textContent = messages.callMeBack;
         submitButton.classList.add("btn-call-me-back");
         submitButton.type = "submit";
 
         form.classList.add("reply-form");
         form.append(userNameInput, userPhoneInput, hiddenInput, submitButton);
-
-        break;
-
-      case "btn-become-our-partner":
-        header.textContent = messages.becomePartner;
-
+      },
+      elements: [header, closeButton, form, dataProcessing],
+    },
+    "btn-become-our-partner": {
+      headerText: messages.becomePartner,
+      setup: () => {
         submitButton.textContent = messages.callMeBack;
         submitButton.classList.add("btn-call-me-back");
         submitButton.type = "submit";
 
         form.classList.add("reply-form");
         form.append(userNameInput, userPhoneInput, hiddenInput, submitButton);
-
-        break;
-
-      case "btn-get-transfer-cost":
-        header.textContent = messages.transferCost;
-
-        submitButton.classList.add("btn-calculate-price");
+      },
+      elements: [header, closeButton, form, dataProcessing],
+    },
+    "btn-get-transfer-cost": {
+      headerText: messages.transferCost,
+      setup: () => {
         submitButton.textContent = messages.calculateCost;
+        submitButton.classList.add("btn-calculate-price");
         submitButton.type = "submit";
 
         form.classList.add("reply-form");
@@ -206,15 +204,15 @@ const modals = () => {
           userPhoneInput,
           userMessageInput,
           hiddenInput,
-          submitButton,
+          submitButton
         );
-
-        break;
-
-      case "btn-choose-city":
+      },
+      elements: [header, closeButton, form, dataProcessing],
+    },
+    "btn-choose-city": {
+      headerText: messages.chooseCity,
+      setup: () => {
         modalContainer.classList.add("choose-city-modal");
-
-        header.textContent = messages.chooseCity;
 
         if (citiesLoaded) {
           displayCities();
@@ -232,16 +230,14 @@ const modals = () => {
             alert(messages.chooseCityError);
           }
         });
-
-        break;
-
-      case "btn-order":
+      },
+      elements: [header, closeButton, cityList, submitButton],
+    },
+    "btn-order": {
+      headerText: messages.transferCost,
+      setup: () => {
         modalContainer.classList.add("modal-order");
 
-        header.textContent = messages.transferCost;
-
-        const orderFormWrapper = createElement("div", ["order-form-wrapper"]);
-        const orderInputs = createElement("div", ["order-inputs"]);
         const transportCard = createElement(
           "div",
           ["transport-card"],
@@ -263,14 +259,14 @@ const modals = () => {
             <span class="price">13000</span>
             <span class="currency">₽</span>
           </p>
-        `,
+        `
         );
         orderInputs.append(
           userNameInput,
           userEmailInput,
           userPhoneInput,
           userMessageInput,
-          hiddenInput,
+          hiddenInput
         );
         orderFormWrapper.append(orderInputs, transportCard, submitButton);
 
@@ -280,12 +276,12 @@ const modals = () => {
 
         form.classList.add("calculator-form");
         form.append(orderFormWrapper);
-
-        break;
-
-      case "btn-order-eef-transfer":
-        header.textContent = messages.orderEefTransfer;
-
+      },
+      elements: [header, closeButton, form],
+    },
+    "btn-order-eef-transfer": {
+      headerText: messages.orderEefTransfer,
+      setup: () => {
         form.classList.add("calculator-form");
 
         submitButton.classList.remove("btn-primary");
@@ -301,30 +297,68 @@ const modals = () => {
           hiddenInput,
           submitButton,
         );
+      },
+      elements: [header, closeButton, form],
+    },
+    "btn-success-reply": {
+      headerText: messages.successfullReplyHeader,
+      setup: () => {
+        modalContainer.classList.add("modal-success-reply");
 
-        break;
+        successContent.innerHTML = `
+          <div class="modal-success-container">
+            <img src="${successIcon}" alt="success-icon">
+            <p class="text-success-reply">${messages.successfullReplyParagraph}</p>
+          </div>
+        `;
 
-      default:
-        console.log("There isn't such button");
-        break;
-    }
+        setTimeout(closeModal, 10000);
+      },
+      elements: [header, closeButton, successContent],
+    },
+  };
 
-    btn === "btn-choose-city"
-      ? modalContainer.append(header, closeButton, cityList, submitButton)
-      : modalContainer.append(header, closeButton, form, dataProcessing);
+  const config = modalConfig[btn];
+
+  if (config) {
+    header.textContent = config.headerText;
+    config.setup();
+    config.elements.forEach((element) => modalContainer.appendChild(element));
+  } else {
+    console.error("Unknown button type");
   }
+}
 
-  function createAndShowModal(btn) {
-    modal.classList.remove("fade-out");
-    createFormContent(btn);
-    modal.classList.add("fade-in");
-    document.body.appendChild(modal);
-    modal.style.display = "block";
-    applyInputs();
-    applyForms();
+export function createAndShowModal(btn) {
+  modal.classList.remove("fade-out");
+  createFormContent(btn);
+  modal.classList.add("fade-in");
+  document.body.appendChild(modal);
+  modal.style.display = "block";
+
+  applyInputs();
+  applyForms();
+}
+
+export function closeModal() {
+  modal.classList.remove("fade-in");
+  modal.classList.add("fade-out");
+  setTimeout(() => modal.style.display = "none", 1000);
+  setTimeout(() => modal.remove(), 1000);
+}
+
+closeButton.addEventListener("click", () => closeModal());
+
+window.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    closeModal();
   }
+});
 
-  // Event Listeners
+loadCities();
+
+// Event Listeners
+const modals = () => {
   document
     .getElementById("btn-call-me-back")
     .addEventListener("click", () => createAndShowModal("btn-call-me-back"));
@@ -369,24 +403,6 @@ const modals = () => {
       createAndShowModal("btn-order-eef-transfer");
     });
   });
-
-  closeButton.addEventListener("click", () => {
-    modal.classList.remove("fade-in");
-    modal.classList.add("fade-out");
-    modal.style.display = "none";
-    setTimeout(() => modal.remove(), 600);
-  });
-
-  window.addEventListener("click", (event) => {
-    if (event.target === modal) {
-      modal.classList.remove("fade-in");
-      modal.classList.add("fade-out");
-      modal.style.display = "none";
-      setTimeout(() => modal.remove(), 600);
-    }
-  });
-
-  loadCities();
 };
 
 export default modals;

@@ -188,6 +188,19 @@
   max-height: 1.5rem;
 }
 
+/* Success modal */
+
+.modal-success-reply {
+  max-width: 668px;
+}
+
+.modal-success-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (max-height: 667px) {
   .modal-container.choose-city-modal {
     top: 63%;

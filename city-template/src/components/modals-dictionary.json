@@ -16,7 +16,9 @@
     "orderEefTransfer": "Order a transfer to the EEF",
     "orderEef": "Order",
     "personalDataProcessing": "By clicking the button, you consent to the <a href='' target='_blank' rel='noopener noreferrer'>processing of personal data</a>",
-    "chooseCityError": "Please, choose your city"
+    "chooseCityError": "Please, choose your city",
+    "successfullReplyHeader": "Application sent successfully",
+    "successfullReplyParagraph": "A manager will contact you shortly!"
   },
   "ru": {
     "name": "Как к вам обращаться?",
@@ -35,6 +37,8 @@
     "orderEefTransfer": "Заказать трансфер на ВЭФ",
     "orderEef": "Заказать",
     "personalDataProcessing": "Нажимая на кнопку, вы даете согласие на <a href='' target='_blank' rel='noopener noreferrer'>обработку персональных данных</a>",
-    "chooseCityError": "Пожалуйста, выберете ваш город"
+    "chooseCityError": "Пожалуйста, выберете ваш город",
+    "successfullReplyHeader": "Заявка успешно отправлена",
+    "successfullReplyParagraph": "В ближайшее время с вами свяжется менеджер!"
   }
 }

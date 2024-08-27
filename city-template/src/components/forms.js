@@ -1,3 +1,5 @@
+import { createAndShowModal, closeModal } from "./modals.js";
+
 const forms = (container = document) => {
   const form = container.querySelectorAll("form"),
     inputs = container.querySelectorAll("input");
@@ -25,7 +27,7 @@ const forms = (container = document) => {
       body: data,
     });
 
-    return await res.ym(98139263,'reachGoal','success.form');
+    return await res;
   };
 
   const clearInputs = () => {
@@ -44,16 +46,16 @@ const forms = (container = document) => {
 
       postData(backend["ajax_url"], formData)
         .then((res) => {
-          console.log(res);
+          res.ym(98139263,'reachGoal','success.form')
+          closeModal();
+
+          createAndShowModal("btn-success-reply");
         })
         .catch((error) => {
           console.log(error);
         })
         .finally(() => {
           clearInputs();
-          setTimeout(() => {
-            statusMessage.remove();
-          }, 5000);
         });
     });
   });

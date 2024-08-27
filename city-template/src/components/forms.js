@@ -1,3 +1,5 @@
+import { createAndShowModal, closeModal } from "./modals";
+
 const forms = (container = document) => {
   const form = container.querySelectorAll("form"),
     inputs = container.querySelectorAll("input");
@@ -45,6 +47,8 @@ const forms = (container = document) => {
       postData(backend["ajax_url"], formData)
         .then((res) => {
           if (res.ok) {
+            closeModal();
+
             createAndShowModal("btn-success-reply");
           } else {
             console.error('Error with response:', res.status);

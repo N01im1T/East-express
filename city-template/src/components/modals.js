@@ -334,10 +334,7 @@ window.addEventListener("click", (event) => {
   }
 });
 
-loadCities().then((cities) => {
-  citiesData = cities;
-  citiesLoaded = true;
-});
+loadCities();
 
 // Event Listeners
 const modals = () => {

@@ -238,6 +238,7 @@
     max-width: 400px;
   }
 
+  .modal-container h4,
   .modal-container:has(.calculator-form) h4 {
     max-width: 250px;
   }

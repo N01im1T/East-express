@@ -46,10 +46,10 @@ const forms = (container = document) => {
 
       postData(backend["ajax_url"], formData)
         .then((res) => {
-          res.ym(98139263,'reachGoal','success.form')
           closeModal();
-
           createAndShowModal("btn-success-reply");
+
+          ym(98139263, 'reachGoal', 'success.form');
         })
         .catch((error) => {
           console.log(error);

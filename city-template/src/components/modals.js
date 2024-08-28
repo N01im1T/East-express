@@ -7,19 +7,27 @@ import briefcaseIcon from "/city-template/public/assets/images/transport/briefca
 import successIcon from "/city-template/public/assets/images/modals/success-icon.svg";
 import dictionary from "./modals-dictionary.json";
 
-
 function createElement(tag, classNames = [], innerHTML = "") {
   const element = document.createElement(tag);
   classNames.forEach((className) => element.classList.add(className));
   element.innerHTML = innerHTML;
   return element;
-};
+}
 
-function createInputContainer(id, type, name, pattern, originalText, errorMessage, labelContent,) {
+function createInputContainer(
+  id,
+  type,
+  name,
+  pattern,
+  originalText,
+  errorMessage,
+  labelContent,
+) {
   const inputContainer = createElement("div", ["input-container"]);
   inputContainer.innerHTML = `
     <input type="${type}" id="${id}" name="${name}" class="styled-input" 
-      pattern="${pattern}" placeholder=" " required>
+      ${name === "message" || name === "email" ? "" : `pattern="${pattern}"`}
+      placeholder=" " ${name === "message" ? "" : "required"}>
     <label for="${id}" class="floating-label" 
       data-original-text="${originalText}" 
       data-error-message="${errorMessage}">
@@ -27,7 +35,7 @@ function createInputContainer(id, type, name, pattern, originalText, errorMessag
     </label>
   `;
   return inputContainer;
-};
+}
 
 // Get the value of the lang attribute
 const rawLanguage = document.documentElement.lang;
@@ -138,7 +146,7 @@ function createFormContent(btn) {
     "email",
     "email",
     "email",
-    "",
+    null,
     messages.email,
     messages.emailError,
     messages.email,
@@ -163,7 +171,7 @@ function createFormContent(btn) {
   const orderFormWrapper = createElement("div", ["order-form-wrapper"]);
   const orderInputs = createElement("div", ["order-inputs"]);
   const successContent = createElement("div", ["success-content"]);
-  
+
   // Configured object
   const modalConfig = {
     "btn-call-me-back": {
@@ -204,7 +212,7 @@ function createFormContent(btn) {
           userPhoneInput,
           userMessageInput,
           hiddenInput,
-          submitButton
+          submitButton,
         );
       },
       elements: [header, closeButton, form, dataProcessing],
@@ -259,14 +267,14 @@ function createFormContent(btn) {
             <span class="price">13000</span>
             <span class="currency">₽</span>
           </p>
-        `
+        `,
         );
         orderInputs.append(
           userNameInput,
           userEmailInput,
           userPhoneInput,
           userMessageInput,
-          hiddenInput
+          hiddenInput,
         );
         orderFormWrapper.append(orderInputs, transportCard, submitButton);
 
@@ -343,7 +351,7 @@ export function createAndShowModal(btn) {
 export function closeModal() {
   modal.classList.remove("fade-in");
   modal.classList.add("fade-out");
-  setTimeout(() => modal.style.display = "none", 1000);
+  setTimeout(() => (modal.style.display = "none"), 1000);
   setTimeout(() => modal.remove(), 1000);
 }
 

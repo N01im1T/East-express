@@ -1,3 +1,5 @@
+import Inputmask from "inputmask";
+
 import dictionary from "./modals-dictionary.json";
 
 const inputs = (container = document) => {
@@ -57,10 +59,15 @@ const inputs = (container = document) => {
     }
   });
 
-  container.querySelectorAll('input[type="tel"]').forEach((input) => {
-    input.addEventListener("input", (e) => {
-      input.value = input.value.replace(/\D/g, "");
-    });
+  const phoneMask = new Inputmask({
+    mask: "+7 (999) 999-99-99",
+    showMaskOnHover: false,
+    clearIncomplete: true,
+    placeholder: "_" 
+  });
+  
+  container.querySelectorAll('input[type="tel"]').forEach((input) => {    
+    phoneMask.mask(input);
 
     input.addEventListener("paste", (e) => {
       e.preventDefault();

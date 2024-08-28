@@ -15,11 +15,20 @@ function createElement(tag, classNames = [], innerHTML = "") {
   return element;
 };
 
-function createInputContainer(id, type, name, pattern, originalText, errorMessage, labelContent,) {
+function createInputContainer(
+  id,
+  type,
+  name,
+  pattern,
+  originalText,
+  errorMessage,
+  labelContent,
+) {
   const inputContainer = createElement("div", ["input-container"]);
   inputContainer.innerHTML = `
     <input type="${type}" id="${id}" name="${name}" class="styled-input" 
-      pattern="${pattern}" placeholder=" " required>
+      ${name === "message" || name === "email" ? "" : `pattern="${pattern}"`}
+      placeholder=" " ${name === "message" ? "" : "required"}>
     <label for="${id}" class="floating-label" 
       data-original-text="${originalText}" 
       data-error-message="${errorMessage}">
@@ -27,7 +36,7 @@ function createInputContainer(id, type, name, pattern, originalText, errorMessag
     </label>
   `;
   return inputContainer;
-};
+}
 
 // Get the value of the lang attribute
 const rawLanguage = document.documentElement.lang;

@@ -1,7 +1,8 @@
 import { createAndShowModal, closeModal } from "./modals.js";
 
 const forms = (container = document) => {
-  const form = container.querySelectorAll("form"),
+  console.log("AddEventListenes")
+  const forms = container.querySelectorAll("form"),
     inputs = container.querySelectorAll("input");
 
   const messages = {
@@ -36,27 +37,39 @@ const forms = (container = document) => {
     });
   };
 
-  form.forEach((item) => {
-    item.addEventListener("submit", (event) => {
-      event.preventDefault();
+  // Prevent forms autocomplete
+  forms.forEach((form) => {
+    form.setAttribute( "autocomplete", "off" );
+  });
 
-      const formData = new FormData(item);
+  // Prevent inputs autocomplete
+  inputs.forEach((input) => {
+    input.setAttribute( "autocomplete", "off" );
+  });
 
-      formData.append("action", "submit_form");
+  forms.forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      if (event.target.matches(".reply-form, .calculator-form")) {
+        event.preventDefault();
 
-      postData(backend["ajax_url"], formData)
-        .then((res) => {
-          closeModal();
-          createAndShowModal("btn-success-reply");
+        const formData = new FormData(form);
 
-          ym(98139263, 'reachGoal', 'success.form');
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          clearInputs();
-        });
+        formData.append("action", "submit_form");
+
+        postData(backend["ajax_url"], formData)
+          .then(() => {
+            closeModal();
+            createAndShowModal("btn-success-reply");
+
+            ym(98139263, 'reachGoal', 'success.form');
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            clearInputs();
+          });
+      };
     });
   });
 

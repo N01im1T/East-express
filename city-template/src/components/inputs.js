@@ -32,8 +32,12 @@ const inputs = (container = document) => {
     const label = inputContainer.querySelector(".floating-label");
     const fieldId = input.id;
 
-    if (fieldsMap[fieldId]) {
-      const { originalText, errorMessage } = fieldsMap[fieldId];
+    const fieldKey = Object.keys(fieldsMap).find((key) => 
+      new RegExp(`^${key}(_\\d+)?$`).test(fieldId)
+    );
+
+    if (fieldsMap[fieldKey]) {
+      const { originalText, errorMessage } = fieldsMap[fieldKey];
 
       label.setAttribute("data-original-text", originalText);
       if (errorMessage) {
@@ -63,19 +67,12 @@ const inputs = (container = document) => {
     mask: "+7 (999) 999-99-99",
     showMaskOnHover: false,
     clearIncomplete: true,
-    placeholder: "_" 
+    placeholder: "_",
+    jitMasking: true,
   });
   
   container.querySelectorAll('input[type="tel"]').forEach((input) => {    
     phoneMask.mask(input);
-
-    input.addEventListener("paste", (e) => {
-      e.preventDefault();
-    });
-
-    input.addEventListener("drop", (e) => {
-      e.preventDefault();
-    });
   });
 };
 

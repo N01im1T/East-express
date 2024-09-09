@@ -1,4 +1,5 @@
 import { createAndShowModal, closeModal } from "./modals";
+let isStaticHanled = false;
 
 const forms = (container = document) => {
   const form = container.querySelectorAll("form"),
@@ -36,23 +37,20 @@ const forms = (container = document) => {
     });
   };
 
-  form.forEach((item) => {
-    item.addEventListener("submit", (event) => {
+  forms.forEach((form) => {
+    if(form.classList.contains('class-static') && isStaticHanled) return;
+    form.addEventListener("submit", (event) => {
       event.preventDefault();
 
-      const formData = new FormData(item);
+      const formData = new FormData(form);
 
       formData.append("action", "submit_form");
 
       postData(backend["ajax_url"], formData)
-        .then((res) => {
-          if (res.ok) {
-            closeModal();
-
-            createAndShowModal("btn-success-reply");
-          } else {
-            console.error('Error with response:', res.status);
-          }
+        .then(() => {
+          closeModal(5000);
+          createAndShowModal("btn-success-reply");
+          ym(98139263, 'reachGoal', 'success.form');
         })
         .catch((error) => {
           console.log(error);
@@ -62,6 +60,8 @@ const forms = (container = document) => {
         });
     });
   });
+
+  isStaticHanled = true;
 
   // Prevent default invalid messages
   inputs.forEach((input) => {

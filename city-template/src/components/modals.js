@@ -299,8 +299,6 @@ function createFormContent(btn) {
             <p class="text-success-reply">${messages.successfullReplyParagraph}</p>
           </div>
         `;
-
-        setTimeout(closeModal, 10000);
       },
       elements: [header, closeButton, successContent],
     },
@@ -323,9 +321,11 @@ export function createAndShowModal(btn) {
   modal.classList.add("fade-in");
   document.body.appendChild(modal);
   modal.style.display = "block";
-
-  applyInputs();
-  applyForms();
+  
+  if (btn !== "btn-success-reply") {
+    applyInputs();
+    applyForms();
+  }
 }
 
 export function closeModal() {
@@ -335,11 +335,18 @@ export function closeModal() {
   setTimeout(() => modal.remove(), 1000);
 }
 
-closeButton.addEventListener("click", () => closeModal());
+export function closeModal(modalCloseDelay) {
+  modal.classList.remove("fade-in");
+  modal.classList.add("fade-out");
+  setTimeout(() => (modal.style.display = "none"), modalCloseDelay);
+  setTimeout(() => modal.remove(), modalCloseDelay);
+}
+
+closeButton.addEventListener("click", () => closeModal(600));
 
 window.addEventListener("click", (event) => {
   if (event.target === modal) {
-    closeModal();
+    closeModal(600);
   }
 });
 

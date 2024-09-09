@@ -2,7 +2,7 @@ import { createAndShowModal, closeModal } from "./modals";
 let isStaticHanled = false;
 
 const forms = (container = document) => {
-  const form = container.querySelectorAll("form"),
+  const forms = container.querySelectorAll("form"),
     inputs = container.querySelectorAll("input");
 
   const messages = {
@@ -50,7 +50,6 @@ const forms = (container = document) => {
         .then(() => {
           closeModal(5000);
           createAndShowModal("btn-success-reply");
-          ym(98139263, 'reachGoal', 'success.form');
         })
         .catch((error) => {
           console.log(error);

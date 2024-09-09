@@ -111,6 +111,9 @@ function displayCities() {
   });
 }
 
+// Get city name
+const metaTag = document.querySelector('meta[name="geo.city"]');
+
 function createFormContent(btn) {
   modalContainer.className = "modal-container";
   modalContainer.innerHTML = "";
@@ -119,7 +122,10 @@ function createFormContent(btn) {
   const hiddenInput = createElement("input");
   hiddenInput.type = "hidden";
   hiddenInput.name = "city";
-  hiddenInput.value = " ";
+  hiddenInput.value = `${metaTag
+    ? metaTag.getAttribute('content')
+    : "Город не указан"}
+  `;
 
   const form = createElement("form");
   form.action = "/submit";

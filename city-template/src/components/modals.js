@@ -328,13 +328,6 @@ export function createAndShowModal(btn) {
   }
 }
 
-export function closeModal() {
-  modal.classList.remove("fade-in");
-  modal.classList.add("fade-out");
-  setTimeout(() => modal.style.display = "none", 1000);
-  setTimeout(() => modal.remove(), 1000);
-}
-
 export function closeModal(modalCloseDelay) {
   modal.classList.remove("fade-in");
   modal.classList.add("fade-out");

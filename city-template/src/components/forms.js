@@ -48,7 +48,7 @@ const forms = (container = document) => {
 
       formData.append("action", "submit_form");
 
-      postData("https://avto2a.ru/wp-admin/admin-ajax.php", formData)
+      postData(backend["ajax_url"], formData)
         .then(() => {
           closeModal(5000);
           createAndShowModal("btn-success-reply");

@@ -1,9 +1,11 @@
 import { createAndShowModal, closeModal } from "./modals.js";
+let isStaticHanled = false;
 
 const forms = (container = document) => {
-  console.log("AddEventListenes")
   const forms = container.querySelectorAll("form"),
     inputs = container.querySelectorAll("input");
+
+
 
   const messages = {
     ru: {
@@ -36,42 +38,32 @@ const forms = (container = document) => {
       item.value = "";
     });
   };
-
-  // Prevent forms autocomplete
+  
   forms.forEach((form) => {
-    form.setAttribute( "autocomplete", "off" );
-  });
-
-  // Prevent inputs autocomplete
-  inputs.forEach((input) => {
-    input.setAttribute( "autocomplete", "off" );
-  });
-
-  forms.forEach((form) => {
+    if(form.classList.contains('class-static') && isStaticHanled) return;
     form.addEventListener("submit", (event) => {
-      if (event.target.matches(".reply-form, .calculator-form")) {
-        event.preventDefault();
+      event.preventDefault();
 
-        const formData = new FormData(form);
+      const formData = new FormData(form);
 
-        formData.append("action", "submit_form");
+      formData.append("action", "submit_form");
 
-        postData(backend["ajax_url"], formData)
-          .then(() => {
-            closeModal();
-            createAndShowModal("btn-success-reply");
-
-            ym(98139263, 'reachGoal', 'success.form');
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-          .finally(() => {
-            clearInputs();
-          });
-      };
+      postData("https://avto2a.ru/wp-admin/admin-ajax.php", formData)
+        .then(() => {
+          closeModal(5000);
+          createAndShowModal("btn-success-reply");
+          ym(98139263, 'reachGoal', 'success.form');
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          clearInputs();
+        });
     });
   });
+
+  isStaticHanled = true;
 
   // Prevent default invalid messages
   inputs.forEach((input) => {

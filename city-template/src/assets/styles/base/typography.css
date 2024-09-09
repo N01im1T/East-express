@@ -74,6 +74,10 @@ p {
   font-size: 1rem;
 }
 
+.btn-primary {
+  color: var(--btn-text-color-default-primary);
+}
+
 .btn-primary:disabled {
   color: var(--btn-text-color-disable-primary);
 }

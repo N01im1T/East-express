@@ -64,14 +64,13 @@ const inputs = (container = document) => {
   });
 
   const phoneMask = new Inputmask({
-    mask: "+7 (999) 999-99-99",
+    mask: '+7(999)999-99-99',
     showMaskOnHover: false,
     clearIncomplete: true,
     placeholder: "_",
-    jitMasking: true,
   });
   
-  container.querySelectorAll('input[type="tel"]').forEach((input) => {    
+  document.querySelectorAll('input[type="tel"]').forEach((input) => {
     phoneMask.mask(input);
   });
 };

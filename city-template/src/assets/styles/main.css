@@ -5,6 +5,7 @@
 @import "./components/header.css";
 @import "./components/footer.css";
 @import "./components/transport.css";
+@import "./components/spief-section";
 @import "./components/calculator.css";
 @import "./components/advantages.css";
 @import "./components/steps.css";
@@ -15,6 +16,7 @@
 @import "./components/modals.css";
 
 html {
+  scroll-behavior: smooth;
   scrollbar-gutter: stable;
 }
 

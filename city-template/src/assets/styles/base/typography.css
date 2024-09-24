@@ -151,6 +151,13 @@ p {
   cursor: not-allowed;
 }
 
+.btn-order-spief-transfer {
+  font-family: var(--font-bold);
+  font-weight: var(--weight-bold);
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
 /* Inputs */
 
 .input-container {
@@ -253,6 +260,15 @@ p {
   line-height: 130%;
 }
 
+.spief-link {
+  font-family: var(--font-semibold);
+  font-weight: var(--weight-semibold);
+  font-size: 1.25rem;
+  color: var(--text-color-dark);
+  line-height: 130%;
+  text-align: left;
+}
+
 .text-wrapper p a {
   color: #2f80ed;
 }
@@ -316,6 +332,20 @@ p {
   font-weight: var(--weight-extrabold);
   font-size: 1.25rem;
   line-height: 120%;
+}
+
+/* St. Petersburg International Economic Forum Section */
+
+.spief-section-text {
+  font-family: var(--font-regular);
+  font-weight: var(--weight-regular);
+  font-size: 1.25rem;
+  line-height: 130%;
+  color: var(--text-color-dark);
+}
+
+.spief-section-text p {
+  white-space: pre-line;
 }
 
 /* Calculator */
@@ -535,6 +565,10 @@ p {
 
   /* Header */
 
+  .spief-link p {
+    font-size: 1rem;
+  }
+
   .car-info-item p {
     font-size: 18px;
   }
@@ -593,7 +627,17 @@ p {
 
   /* Header */
 
+  .spief-link p {
+    font-size: 0.825rem;
+  }
+
   .car-info-item span {
+    font-size: 3rem;
+  }
+
+  /* St.Petersburg International Economic Forum section */
+
+  .spief-section-container > .spief-section-text h2 {
     font-size: 3rem;
   }
 
@@ -623,7 +667,7 @@ p {
   }
 }
 
-@media (max-width: 465px) {
+@media (max-width: 490px) {
   h1 {
     font-size: 2.5rem;
     text-wrap: wrap;
@@ -647,6 +691,13 @@ p {
   .main-content-wraper p {
     font-size: 1rem;
   }
+
+  /* St. Petersburg Internetional Economic section */
+
+  .spief-section-container > .spief-section-text h2 {
+    font-size: 2.25rem;
+  }
+
 
   /* Advantages */
 

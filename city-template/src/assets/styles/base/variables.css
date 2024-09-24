@@ -28,6 +28,10 @@
   --btn-choose-city-hover: #333333;
   --btn-choose-city-click: #bdbdbd;
   --btn-choose-city-active: #219653;
+  --btn-spief-color-default: #2f80ed;
+  --btn-spief-color-hover: #70a5ec;
+  --btn-spief-color-click: #0a4ea9;
+  --btn-spief-color-disable: #979797;
 
   --input-primary-color: #f2f2f2;
   --input-secondary-color: #333333;

@@ -294,6 +294,27 @@ function createFormContent(btn) {
       },
       elements: [header, closeButton, form],
     },
+    "btn-order-spief-transfer": {
+      headerText: messages.orderSpiefTransfer,
+      setup: () => {
+        form.classList.add("calculator-form");
+
+        submitButton.classList.remove("btn-primary");
+        submitButton.classList.add("btn-order-spief-transfer");
+        submitButton.type = "submit";
+        submitButton.textContent = messages.orderSpief;
+
+        form.append(
+          userNameInput,
+          userEmailInput,
+          userPhoneInput,
+          userMessageInput,
+          hiddenInput,
+          submitButton,
+        );
+      },
+      elements: [header, closeButton, form],
+    },
     "btn-success-reply": {
       headerText: messages.successfullReplyHeader,
       setup: () => {
@@ -389,6 +410,12 @@ const modals = () => {
         transportCard.querySelector(".transport-quality").textContent;
       modalContainer.querySelector(".price").textContent =
         transportCard.querySelector(".price").textContent;
+    });
+  });
+
+  document.querySelectorAll(".btn-order-spief-transfer").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      createAndShowModal("btn-order-spief-transfer");
     });
   });
 };

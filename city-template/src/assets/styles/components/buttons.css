@@ -120,6 +120,27 @@
   transition: background-color 0.2s ease;
 }
 
+/* St.Petersburg Internetional Economic Forum button */
+
+.btn-order-spief-transfer {
+  background-color: var(--btn-spief-color-default);
+
+  border: none;
+
+  max-width: 268px;
+  min-width: 268px;
+  min-height: 67px;
+  height: 67px;
+}
+
+.btn-order-spief-transfer:hover {
+  background-color: var(--btn-spief-color-hover);
+}
+
+.btn-order-spief-transfer:active {
+  background-color: var(--btn-spief-color-click);
+}
+
 /* Modal buttons */
 
 .reply-form > .btn-call-me-back,
@@ -162,6 +183,11 @@
 
 .city-item.selected > .city-item-button .check-mark-color {
   stroke: var(--btn-choose-city-active);
+}
+
+.calculator-form > .btn-order-spief-transfer {
+  max-width: 767px;
+  width: 100%;
 }
 
 /* Toggle language button */
@@ -261,11 +287,17 @@
   }
 }
 
+@media (max-width: 625px) {
+  .btn-order-spief-transfer {
+    max-width: 529px;
+    min-width: 256px;
+    width: 100%;
+  }
+}
+
 @media (max-width: 592px) {
   .btn-sm {
-    max-width: 496px;
-    min-width: 272px;
-    width: 100%;
+    width: 268px;
   }
 }
 

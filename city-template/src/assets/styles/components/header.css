@@ -204,15 +204,30 @@
   vertical-align: baseline;
 }
 
-.text-wrapper {
+.spief-link {
   display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 0.5rem;
 
-  margin-top: 3rem;
+  background-color: var(--secondary-color);
+
+  max-width: 318px;
+  max-height: 95px;
+  margin-top: 1rem;
+  padding: 1rem 1.25rem 1rem 1.25rem;
+  border: none;
+  border-radius: 1.25rem;
 }
 
-.text-wrapper p {
-  margin-left: 2rem;
+.text-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 1rem;
+  row-gap: 1rem;
+
+  margin-top: 3rem;
 }
 
 .car-info {
@@ -253,6 +268,15 @@
     max-height: 56px;
   }
 
+  .spief-link {
+    max-width: 222px;
+    padding: 0.75rem 0.875rem 0.75rem 0.875rem;
+  }
+
+  .spief-link img {
+    max-width: 76px;
+  }
+
   .car-info {
     justify-content: space-between;
     gap: 2rem;
@@ -288,6 +312,10 @@
 
   .toggle-language-container {
     display: none;
+  }
+
+  .dark-logo-container span{
+    max-width: 12rem;
   }
 
   .contact-info {
@@ -351,6 +379,15 @@
     max-height: 46px;
   }
 
+  .spief-link {
+    max-width: 190px;
+    padding: 0.5rem 0.625rem 0.5rem 0.625rem;
+  }
+
+  .spief-link img {
+    max-width: 56px;
+  }
+
   .text-wrapper p {
     max-width: 251px;
   }
@@ -388,7 +425,7 @@
   }
 }
 
-@media (max-width: 489px) {
+@media (max-width: 520px) {
   .header {
     margin: 0.5rem 0.5rem 0rem 0.5rem;
     padding-bottom: 1.5rem;
@@ -408,5 +445,11 @@
 
   .car-info {
     margin-top: 3rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .spief-link {
+    padding: 0.5rem;
   }
 }
